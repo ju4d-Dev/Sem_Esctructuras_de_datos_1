@@ -1,44 +1,45 @@
-#include <stdio.h>
-#include <string.h>
+#include <iostream>
+#include <string>
 
-struct CD
+class CD
 {
+public:
     int codigo;
-    char artista[30];
-    char album[30];
+    std::string artista;
+    std::string album;
     int no_canciones;
     float precio;
     int existencias;
 };
 
-void agregarCD(struct CD cds[], int *numCDs);
-void mostrarCDs(struct CD cds[], int numCDs);
-void buscarPorCodigo(struct CD cds[], int numCDs);
-void modificarCD(struct CD cds[], int numCDs);
-void realizarVenta(struct CD cds[], int numCDs);
+void agregarCD(CD cds[], int &numCDs);
+void mostrarCDs(const CD cds[], int numCDs);
+void buscarPorCodigo(const CD cds[], int numCDs);
+void modificarCD(CD cds[], int numCDs);
+void realizarVenta(CD cds[], int numCDs);
 
 int main()
 {
-    struct CD cds[50];
+    CD cds[50];
     int numCDs = 0;
     int opcion;
 
     do
     {
-        printf("\nMenu:\n");
-        printf("1. Agregar CD\n");
-        printf("2. Mostrar todos los CD's\n");
-        printf("3. Buscar por codigo\n");
-        printf("4. Modificar\n");
-        printf("5. Venta\n");
-        printf("6. Salir\n");
-        printf("Selecciona una opcion: ");
-        scanf("%d", &opcion);
+        std::cout << "\nMenu:\n";
+        std::cout << "1. Agregar CD\n";
+        std::cout << "2. Mostrar todos los CD's\n";
+        std::cout << "3. Buscar por codigo\n";
+        std::cout << "4. Modificar\n";
+        std::cout << "5. Venta\n";
+        std::cout << "6. Salir\n";
+        std::cout << "Selecciona una opcion: ";
+        std::cin >> opcion;
 
         switch (opcion)
         {
         case 1:
-            agregarCD(cds, &numCDs);
+            agregarCD(cds, numCDs);
             break;
         case 2:
             mostrarCDs(cds, numCDs);
@@ -53,103 +54,107 @@ int main()
             realizarVenta(cds, numCDs);
             break;
         case 6:
-            printf("Cerrando el programa.\n");
+            std::cout << "Cerrando el programa.\n";
             break;
         default:
-            printf("Opción invalida.\n");
+            std::cout << "Opción invalida.\n";
         }
     } while (opcion != 6);
 
     return 0;
 }
-void agregarCD(struct CD cds[], int *numCDs)
+
+void agregarCD(CD cds[], int &numCDs)
 {
-    if (*numCDs < 50)
+    if (numCDs < 50)
     {
-        printf("Ingrese el codigo: ");
-        scanf("%d", &cds[*numCDs].codigo);
+        std::cout << "Ingrese el codigo: ";
+        std::cin >> cds[numCDs].codigo;
 
-        printf("Ingrese el artista: ");
-        scanf(" %[^\n]", cds[*numCDs].artista); 
+        std::cout << "Ingrese el artista: ";
+        std::cin.ignore();
+        std::getline(std::cin, cds[numCDs].artista);
 
-        printf("Ingrese el nombre del album: ");
-        scanf(" %[^\n]", cds[*numCDs].album); 
+        std::cout << "Ingrese el nombre del album: ";
+        std::getline(std::cin, cds[numCDs].album);
 
-        printf("Ingrese el numero de canciones: ");
-        scanf("%d", &cds[*numCDs].no_canciones);
+        std::cout << "Ingrese el numero de canciones: ";
+        std::cin >> cds[numCDs].no_canciones;
 
-        printf("Ingrese el precio: ");
-        scanf("%f", &cds[*numCDs].precio);
+        std::cout << "Ingrese el precio: ";
+        std::cin >> cds[numCDs].precio;
 
-        printf("Ingrese las existencias: ");
-        scanf("%d", &cds[*numCDs].existencias);
+        std::cout << "Ingrese las existencias: ";
+        std::cin >> cds[numCDs].existencias;
 
-        (*numCDs)++;
-        printf("CD agregado.\n");
+        numCDs++;
+        std::cout << "CD agregado.\n";
     }
     else
     {
-        printf("No se pueden agregar mas CD's\n");
+        std::cout << "No se pueden agregar mas CD's\n";
     }
 }
 
-void mostrarCDs(struct CD cds[], int numCDs)
+void mostrarCDs(const CD cds[], int numCDs)
 {
-    printf("\nLista de CDs:\n\n");
+    std::cout << "\nLista de CDs:\n\n";
     for (int i = 0; i < numCDs; i++)
     {
-        printf(" Codigo: %d \n Artista: %s \n Album: %s \n Precio: %.2f \n Existencias: %d\n\n",
-               cds[i].codigo, cds[i].artista, cds[i].album, cds[i].precio, cds[i].existencias);
+        std::cout << " Codigo: " << cds[i].codigo << "\n Artista: " << cds[i].artista
+                  << "\n Album: " << cds[i].album << "\n Precio: " << cds[i].precio
+                  << "\n Existencias: " << cds[i].existencias << "\n\n";
     }
 }
 
-void buscarPorCodigo(struct CD cds[], int numCDs)
+void buscarPorCodigo(const CD cds[], int numCDs)
 {
     int codigoBuscar;
-    printf("Ingrese el codigo a buscar: ");
-    scanf("%d", &codigoBuscar);
+    std::cout << "Ingrese el codigo a buscar: ";
+    std::cin >> codigoBuscar;
 
     for (int i = 0; i < numCDs; i++)
     {
         if (cds[i].codigo == codigoBuscar)
         {
-            printf("\nCD encontrado:\n\n");
-            printf(" Codigo: %d \n Artista: %s \n Album: %s \n Precio: %.2f \n Existencias: %d\n",
-                   cds[i].codigo, cds[i].artista, cds[i].album, cds[i].precio, cds[i].existencias);
+            std::cout << "\nCD encontrado:\n\n";
+            std::cout << " Codigo: " << cds[i].codigo << "\n Artista: " << cds[i].artista
+                      << "\n Album: " << cds[i].album << "\n Precio: " << cds[i].precio
+                      << "\n Existencias: " << cds[i].existencias << "\n";
             return;
         }
     }
 
-    printf("CD con codigo %d no encontrado.\n", codigoBuscar);
+    std::cout << "CD con codigo " << codigoBuscar << " no encontrado.\n";
 }
 
-void modificarCD(struct CD cds[], int numCDs)
+void modificarCD(CD cds[], int numCDs)
 {
     int codigoModificar;
-    printf("Ingrese el codigo del CD a modificar: ");
-    scanf("%d", &codigoModificar);
+    std::cout << "Ingrese el codigo del CD a modificar: ";
+    std::cin >> codigoModificar;
 
     for (int i = 0; i < numCDs; i++)
     {
         if (cds[i].codigo == codigoModificar)
         {
-            printf("Ingrese el nuevo precio: ");
-            scanf("%f", &cds[i].precio);
-            printf("Ingrese las nuevas existencias: ");
-            scanf("%d", &cds[i].existencias);
-            printf("CD modificado con exito.\n");
+            std::cout << "Ingrese el nuevo precio: ";
+            std::cin >> cds[i].precio;
+            std::cout << "Ingrese las nuevas existencias: ";
+            std::cin >> cds[i].existencias;
+            std::cout << "CD modificado con exito.\n";
             return;
         }
     }
 
-    printf("CD con codigo %d no encontrado.\n", codigoModificar);
+    std::cout << "CD con codigo " << codigoModificar << " no encontrado.\n";
 }
 
-void realizarVenta(struct CD cds[], int numCDs)
+void realizarVenta(CD cds[], int numCDs)
 {
     int codigoVenta;
-    printf("Ingrese el codigo del CD a vender: ");
-    scanf("%d", &codigoVenta);
+    std::cout << "Ingrese el codigo del CD a vender: ";
+    std::cin >> codigoVenta;
 
     for (int i = 0; i < numCDs; i++)
     {
@@ -158,17 +163,15 @@ void realizarVenta(struct CD cds[], int numCDs)
             if (cds[i].existencias > 0)
             {
                 cds[i].existencias--;
-                printf("Venta realizada. Existencias restantes: %d\n", cds[i].existencias);
+                std::cout << "Venta realizada. Existencias restantes: " << cds[i].existencias << "\n";
             }
             else
             {
-                printf("No hay existencias disponibles para este CD.\n");
+                std::cout << "No hay existencias disponibles para este CD.\n";
             }
             return;
         }
     }
 
-    printf("CD con codigo %d no encontrado.\n", codigoVenta);
+    std::cout << "CD con codigo " << codigoVenta << " no encontrado.\n";
 }
-
-
